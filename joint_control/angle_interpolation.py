@@ -42,6 +42,7 @@ class AngleInterpolationAgent(PIDAgent):
         return super(AngleInterpolationAgent, self).think(perception)
 
     def angle_interpolation(self, keyframes, perception):
+        
         target_joints = {}
         keyframes_co = copy.deepcopy(keyframes)
         if not self.is_running:
@@ -50,14 +51,22 @@ class AngleInterpolationAgent(PIDAgent):
         for i,_ in enumerate(keyframes_co[2]):
             for  n,_ in enumerate(keyframes_co[2][i]):
                 keyframes_co[2][i][n]=keyframes_co[2][i][n][0]
+        
+
+        
 
         if len(keyframes_co[1])==0 or perception.time-self.init_time>max([max(i) for i in keyframes_co[1]]):
              if self.keyframes!= ([], [], []) and perception.time-self.init_time>max([max(i) for i in keyframes_co[1]]):
                  self.keyframes= ([], [], [])
              self.is_running=False
              return {}
+        
+
 
         self.is_running=True
+
+        if perception.time-self.init_time<min([min(i) for i in keyframes_co[1]]):
+            return {}
 
         def find_local_maximas(ys):
             l=[0]
