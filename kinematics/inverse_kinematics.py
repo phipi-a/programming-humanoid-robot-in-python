@@ -14,6 +14,7 @@ from ntpath import join
 from forward_kinematics import ForwardKinematicsAgent
 from numpy.matlib import identity
 import numpy as np
+import time
 from numpy import arcsin, arccos, linalg,arctan2
 from scipy.optimize import fmin, minimize
 
@@ -84,25 +85,25 @@ class InverseKinematicsAgent(ForwardKinematicsAgent):
         # YOUR CODE HERE
         self.a=[]
         X=self.inverse_kinematics(effector_name,transform)
-        print(X)
-        print("Final Position:",from_trans(self.forward_kinematics_own(effector_name,X)))
+        #print(X)
+        #print("Final Position:",from_trans(self.forward_kinematics_own(effector_name,X)))
         names=[]
         times=[]
         keys=[]
         for k,v in X.items():
             names.append(k)
-            times.append([start_time,start_time+1])
+            times.append([start_time,start_time+10])
             keys.append([[0.1,[0,0,0], [0,0,0]],[v,[0,0,0], [0,0,0]]])
         self.keyframes = (names, times, keys)  # the result joint angles have to fill in
 
 if __name__ == '__main__':
     agent = InverseKinematicsAgent()
-    np.set_printoptions(suppress=True)
+    #np.set_printoptions(suppress=True)
     # test inverse kinematics
     T = np.identity(4)
     T[:-1,-1]= np.asarray([0, 0.05, -0.26])*1000
     
-    print("Target Position:",from_trans(T))
-    agent.set_transforms('LLeg', T,0)
+    #print("Target Position:",from_trans(T))
+    agent.set_transforms('LLeg', T,3)
     
     agent.run()

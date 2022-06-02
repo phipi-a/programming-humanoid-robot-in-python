@@ -78,14 +78,14 @@ class ForwardKinematicsAgent(PostureRecognitionAgent):
     def think(self, perception):
         
         self.forward_kinematics(perception.joint)
-        if self.i%100==0:
-            np.set_printoptions(suppress=True)
-            values=[np.round(from_trans(self.transforms[z]),decimals=2) for z in self.chains["LLeg"]]
-            for i,_ in enumerate(values):
-                values[i]=values[i][:3]
-            print(*list(zip( self.chains["LLeg"],values)),sep='')
-            print("\n")
-        self.i+=1
+        # if self.i%100==0:
+        #     np.set_printoptions(suppress=True)
+        #     values=[np.round(from_trans(self.transforms[z]),decimals=2) for z in self.chains["LLeg"]]
+        #     for i,_ in enumerate(values):
+        #         values[i]=values[i][:3]
+        #     print(*list(zip( self.chains["LLeg"],values)),sep='')
+        #     print("\n")
+        # self.i+=1
         return super(ForwardKinematicsAgent, self).think(perception)
 
     def getRotationMatrix(self, axis, angle,x,y,z):
