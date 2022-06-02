@@ -52,6 +52,8 @@ class AngleInterpolationAgent(PIDAgent):
                 keyframes_co[2][i][n]=keyframes_co[2][i][n][0]
 
         if len(keyframes_co[1])==0 or perception.time-self.init_time>max([max(i) for i in keyframes_co[1]]):
+             if self.keyframes!= ([], [], []) and perception.time-self.init_time>max([max(i) for i in keyframes_co[1]]):
+                 self.keyframes= ([], [], [])
              self.is_running=False
              return {}
 
@@ -74,7 +76,7 @@ class AngleInterpolationAgent(PIDAgent):
             css=[]
             for i,lm in enumerate(lms[1:]):
                 css.append(CubicSpline(x[lms[i]:lm+1],y[lms[i]:lm+1],bc_type=((1, 0.0), (1, 0.0))))
-            return css
+            return css 
         def get_sp(x_train,lms,css,x_test):
             for p,i in enumerate(list(np.asarray(x_train)[lms][1:])):
                 if x_test<i:
@@ -97,6 +99,7 @@ class AngleInterpolationAgent(PIDAgent):
             target_joints["RHipYawPitch"]=target_joints["LHipYawPitch"]
         except KeyError:
             pass
+        
         return target_joints
 
 if __name__ == '__main__':
