@@ -118,10 +118,13 @@ class ForwardKinematicsAgent(PostureRecognitionAgent):
         motion_axis,x,y,z,min,max = self.rotation_axis[joint_name]
         joint_angle=np.clip(joint_angle,min,max)
 
-        if motion_axis == 'y,z':
+        if joint_name == 'LHipYawPitch':
             T = self.getRotationMatrix('x', deg2rad(45),0,0,0)
             T = T@self.getRotationMatrix('y', joint_angle,x,y,z)
-            T = T@self.getRotationMatrix('x', deg2rad(-45),0,0,0)
+        elif joint_name == 'RHipYawPitch':
+            T = self.getRotationMatrix('x', deg2rad(-45),0,0,0)
+            T = T@self.getRotationMatrix('y', joint_angle,x,y,z)
+                
         else:
             T = self.getRotationMatrix(motion_axis, joint_angle,x,y,z)
 
